@@ -1,3 +1,8 @@
+#
+# Copyright 2026 Hardronix
+# SPDX-License-Identifier: Apache-2.0
+#
+
 import bpy
 import struct
 import copy
@@ -159,7 +164,7 @@ def export(path):
         
         bpy.context.scene.frame_set(bpy.context.scene.frame_current + bpy.context.scene.frame_step)
         
-    # Collect custom keys (they're unoredered so like...)
+    # Collect custom keys (they're unordered so like...)
     for m in bpy.context.scene.timeline_markers:
         cmd, arg = m.name.split(" ", 1)
         

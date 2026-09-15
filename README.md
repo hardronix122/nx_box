@@ -1,3 +1,9 @@
+<!--
+Copyright 2026 Hardronix
+SPDX-License-Identifier: Apache-2.0
+-->
+
+
 # NX Box
 Neversoft Box is basically a set of python scripts hacked together by Hardronix specifically for Blender!<br/>
 Here you have multiple kind of scripts, both for 4.x and 2.79, maybe one will find it useful someday?...<br/>
