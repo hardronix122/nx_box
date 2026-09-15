@@ -147,12 +147,14 @@ def export(path):
         # Also, collect Camera's FOV and deduplicate it on the fly
         camera_fov = main_cam.data.lens
         
+        camera_lens_width = main_cam.data.sensor_width
+        
         if last_camera_fov is None:
-            camera_fov_keys.append((frame, camera_fov))
+            camera_fov_keys.append((frame, camera_fov, camera_lens_width))
             last_camera_fov = camera_fov
         else:
             if not math.isclose(camera_fov, last_camera_fov, rel_tol=1e-5):
-                camera_fov_keys.append((frame, camera_fov))
+                camera_fov_keys.append((frame, camera_fov, camera_lens_width))
                 last_camera_fov = camera_fov
         
         bpy.context.scene.frame_set(bpy.context.scene.frame_current + bpy.context.scene.frame_step)
@@ -313,12 +315,15 @@ def export(path):
     for custkey in camera_fov_keys:
         frame = custkey[0]
         fov = custkey[1]
+        sensor_width = custkey[2]
         
         # Do not append if taken
         if frame in prev_taken_frames:
             continue
         
-        custom_frames_combined.append((frame, 1, math.radians(fov)))
+        fov = 2.0 * math.atan2(sensor_width, 2.0 * fov)
+        
+        custom_frames_combined.append((frame, 1, fov))
     
     # Sort custom keyframes... The game hates unsorted ones
     custom_frames_combined.sort(key=lambda x: x[0])
