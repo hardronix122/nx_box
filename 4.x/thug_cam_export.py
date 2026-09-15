@@ -352,4 +352,4 @@ def export(path):
         print(f"Failed to write the camera animation to {path}!")
 
 # Set your path here
-export("/home/hardronix/.wine/drive_c/thug2-hrdxmod-help/Game/Data/hrdx/animations/camera_test.cam.xbx")
+export("animation.cam")
