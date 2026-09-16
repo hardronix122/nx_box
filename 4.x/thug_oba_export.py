@@ -1,3 +1,8 @@
+#
+# Copyright 2026 Hardronix
+# SPDX-License-Identifier: Apache-2.0
+#
+
 import bpy
 import struct
 import copy
