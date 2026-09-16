@@ -144,8 +144,6 @@ def export(main_camera_name, path):
     # Collect the keyframes
     for x in range(0, bpy.context.scene.frame_end):
         frame = bpy.context.scene.frame_current
-        
-        print(f"Frame: {frame}")
 
         ska_rotations.append(copy.copy(main_cam.rotation_quaternion))
         ska_translations.append(copy.copy(main_cam.location))
@@ -168,6 +166,10 @@ def export(main_camera_name, path):
     # Collect custom keys (they're unordered so like...)
     for m in bpy.context.scene.timeline_markers:
         cmd, arg = m.name.split(" ", 1)
+        
+        if m.frame < 0:
+            xprint(f"Negative markers at {m.frame}! The game doesn't support negative time!")
+            return
         
         if cmd == "runscript" or cmd == "fov":
             if not arg:
