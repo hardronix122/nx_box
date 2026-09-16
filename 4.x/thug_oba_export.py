@@ -1,8 +1,3 @@
-#
-# Copyright 2026 Hardronix
-# SPDX-License-Identifier: Apache-2.0
-#
-
 import bpy
 import struct
 import copy
@@ -342,6 +337,19 @@ def export(collection_name, export_path):
         for channel in animated_object_channels:
             for qkey in channel.rotation_keys:
                 dx_rotation = flip_quaternion_to_game_axis(qkey.rotation)
+                
+                prev_flopped_dx_rotation = None
+                
+                # Now we fix double cover, because Blender honestly isn't perfect and can make the camera rotate two times... I mean, you will open graph editor and fix that, right?...
+                if prev_flopped_dx_rotation is not None:
+                    if dx_rotation.dot(prev_flopped_dx_rotation) < 0.0:
+                        dx_rotation.negate()
+
+                prev_flopped_dx_rotation = dx_rotation
+
+                # The sign is hidden in the timestamp! So bring it if it's negative
+                if dx_rotation.w < 0.0:
+                    time |= 0x8000      
                 
                 oba_data += struct.pack("<Ifff", qkey.time, dx_rotation.x, dx_rotation.y, dx_rotation.z)
         
