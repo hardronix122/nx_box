@@ -211,11 +211,11 @@ def export(collection_name, export_path):
     
     # Early return if didn't find anything
     if cutscene_collection is None:
-        xprint(f"Failed to export OBA for {path}: current collection does not exist!")
+        xprint(f"Failed to export OBA for {export_path}: current collection does not exist!")
         return
     
     if not cutscene_collection.objects:
-        xprint(f"Failed to export OBA for {path}: current collection is empty!")
+        xprint(f"Failed to export OBA for {export_path}: current collection is empty!")
         return
     
     animated_object_channels = []
