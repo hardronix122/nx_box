@@ -354,7 +354,7 @@ def export(collection_name, export_path):
 
                 # The sign is hidden in the timestamp! So bring it if it's negative
                 if dx_rotation.w < 0.0:
-                    time |= 0x8000      
+                    qkey.time |= 0x8000      
                 
                 oba_data += struct.pack("<Ifff", qkey.time, dx_rotation.x, dx_rotation.y, dx_rotation.z)
         
