@@ -132,10 +132,11 @@ def export(main_camera_name, path):
     bpy.ops.screen.animation_cancel(restore_frame=False)
 
     
-    main_cam = bpy.data.objects[main_camera_name]
+    
+    main_cam = bpy.data.objects.get(main_camera_name)
 
     if not main_cam:
-        xprint("Failed to find the main camera! Make sure to label it \"{main_camera_name}\"!")
+        xprint(f"Failed to find the main camera! Make sure to label it \"{main_camera_name}\"!")
         return
 
     bpy.context.scene.frame_set(0)
