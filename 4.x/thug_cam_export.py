@@ -195,7 +195,7 @@ def export(path):
     ska_flags |= flag_prerotated_root
     ska_flags |= flag_compressed_time
     
-    ska_time = bpy.context.scene.frame_end / 60
+    ska_time = bpy.context.scene.frame_end / bpy.context.scene.render.fps_base
 
     # Since it's just a camera, it'll be a single bone
     bones_count = 1
