@@ -120,7 +120,7 @@ def xprint(message):
     print(message)
     bpy.context.workspace.status_text_set(message)
 
-def export(path):
+def export(main_camera_name, path):
     ska_rotations = []
     ska_translations = []
     ska_custom_keys = []
@@ -132,10 +132,10 @@ def export(path):
     bpy.ops.screen.animation_cancel(restore_frame=False)
 
     
-    main_cam = bpy.data.objects["main_camera"]
+    main_cam = bpy.data.objects[main_camera_name]
 
     if not main_cam:
-        xprint("Failed to find the main camera! Make sure to label it \"main_camera\"!")
+        xprint("Failed to find the main camera! Make sure to label it \"{main_camera_name}\"!")
         return
 
     bpy.context.scene.frame_set(0)
@@ -362,4 +362,4 @@ def export(path):
         print(f"Failed to write the camera animation to {path}!")
 
 # Set your path here
-export("animation.cam")
+export("main_camera", "animation.cam")
