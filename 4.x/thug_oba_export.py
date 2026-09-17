@@ -205,7 +205,7 @@ def flip_quaternion_to_game_axis(x):
 
     return flopped_x
         
-def export(collection_name, export_path):
+def export(collection_name, delta_enabled, export_path):
     # First, find the collection that contains cutscene stuff
     cutscene_collection = bpy.data.collections.get(collection_name)
     
@@ -251,23 +251,30 @@ def export(collection_name, export_path):
             absolute_math_translation = Vector((absolute_translation.x, absolute_translation.y, absolute_translation.z))
             absolute_math_rotation = Quaternion((absolute_rotation.w, absolute_rotation.x, absolute_rotation.y, absolute_rotation.z))
             
-            # Initialize last translation and rotation for delta epsilon check (deduplication)
-            if channel.last_translation is None:
-                channel.last_translation = absolute_math_translation
+            # Initialize last translation and rotation for delta epsilon check (deduplication) whenever enabled
+            # Usually disabled the default because OBA is linear and if you won't have a keyframe, global object position will be copied
+            # Making, for example, two cubes rotate the same, because one of them has rotation keyframes
+
+            if delta_enabled:
+                if channel.last_translation is None:
+                    channel.last_translation = absolute_math_translation
             
-            if channel.last_rotation is None:
-                channel.last_rotation = absolute_math_rotation
+                if channel.last_rotation is None:
+                    channel.last_rotation = absolute_math_rotation
             
-            # Append translation keyframe if it changed
-            if is_different(channel.last_translation.x, absolute_math_translation.x) or is_different(channel.last_translation.y, absolute_math_translation.y) or is_different(channel.last_translation.z, absolute_math_translation.z):
-                channel.translation_keys.append(TKey(current_frame, absolute_math_translation))
-                channel.last_translation = absolute_math_translation
+                # Append translation keyframe if it changed
+                if is_different(channel.last_translation.x, absolute_math_translation.x) or is_different(channel.last_translation.y, absolute_math_translation.y) or is_different(channel.last_translation.z, absolute_math_translation.z):
+                    channel.translation_keys.append(TKey(current_frame, absolute_math_translation))
+                    channel.last_translation = absolute_math_translation
                 
-            # Append rotation keyframe if it changed
-            if is_different(channel.last_rotation.w, absolute_math_rotation.w) or is_different(channel.last_rotation.x, absolute_math_rotation.x) or is_different(channel.last_rotation.y, absolute_math_rotation.y) or is_different(channel.last_rotation.z, absolute_math_rotation.z):
+                # Append rotation keyframe if it changed
+                if is_different(channel.last_rotation.w, absolute_math_rotation.w) or is_different(channel.last_rotation.x, absolute_math_rotation.x) or is_different(channel.last_rotation.y, absolute_math_rotation.y) or is_different(channel.last_rotation.z, absolute_math_rotation.z):
+                    channel.rotation_keys.append(QKey(current_frame, absolute_math_rotation))
+                    channel.last_rotation = absolute_math_rotation
+            else:
+                channel.translation_keys.append(TKey(current_frame, absolute_math_translation))
                 channel.rotation_keys.append(QKey(current_frame, absolute_math_rotation))
-                channel.last_rotation = absolute_math_rotation
-            
+                
         bpy.context.scene.frame_set(current_frame + bpy.context.scene.frame_step)
         
         # Collect totals and print debug info
@@ -378,4 +385,4 @@ def export(collection_name, export_path):
             xprint(f"Failed to write the object animation to {export_path}!")
             
 # Set your path here
-export("cutscene_objects", "object_animation.oba")
+export("cutscene_objects", False, "object_animation.oba")
