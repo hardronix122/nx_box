@@ -339,11 +339,11 @@ def export(collection_name, export_path):
         # float y
         # float z
         # Each one of these needs to be flipped
+        prev_flopped_dx_rotation = None
+        
         for channel in animated_object_channels:
             for qkey in channel.rotation_keys:
                 dx_rotation = flip_quaternion_to_game_axis(qkey.rotation)
-                
-                prev_flopped_dx_rotation = None
                 
                 # Now we fix double cover, because Blender honestly isn't perfect and can make the camera rotate two times... I mean, you will open graph editor and fix that, right?...
                 if prev_flopped_dx_rotation is not None:
