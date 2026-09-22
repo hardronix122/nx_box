@@ -14,3 +14,4 @@ Mostly it's just file I/O stuff, so... Yea... xD<br/>
 # Index for 4.x
 1. [THUG1/2 .cam animation exporter](4.x/thug_cam_export.py)
 2. [THUG1/2 .oba animation exporter](4.x/thug_oba_export.py)
+3. [THUG1/2 .ske skeleton importer](4.x/thug_ske_import.py)
