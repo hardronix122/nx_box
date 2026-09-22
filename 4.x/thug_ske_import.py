@@ -112,15 +112,7 @@ def xprint(message):
     debug_text_log(message)
     print(message)
     bpy.context.workspace.status_text_set(message)
-    
-def debug_text_clear():
-    log_text_block = bpy.data.texts.get("ske_import_logs")
-    
-    if not log_text_block:
-        return
-    
-    log_text_block.clear()
-    
+
 def load_bone_name_table(path):
     fast_bone_dict = {}
     
