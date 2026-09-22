@@ -322,6 +322,10 @@ def import_ske(skeleton_data_name, skeleton_object_name, path, name_map):
             bone_tail_offset = final_local_bone_transformation_matrix.to_3x3() @ Vector((0.0, -4.0, 0.0))
             bone_data.tail = final_local_bone_transformation_matrix.to_translation() + bone_tail_offset
             
+            # And just for the future, set the flip if available
+            if bone_entry.bone_flip_name_checksum != 0:
+                bone_data["nx_box_bone_flip"] = bone_entry.bone_flip_name
+            
         # Awesome! Now link the parents
         for bone_entry in bone_entry_table:
             
@@ -350,7 +354,6 @@ def import_ske(skeleton_data_name, skeleton_object_name, path, name_map):
             parse(src)
     except OSError:
         xprint(f"Failed to open skeletal animation at {path}!")
-
 
 # Set your path here, and optionally, the bone names table        
 #bone_names = load_bone_name_table("/home/hardronix/.nxbox/bone_names.txt")
