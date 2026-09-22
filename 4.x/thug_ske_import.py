@@ -300,7 +300,7 @@ def import_ske(skeleton_data_name, skeleton_object_name, path, name_map):
             # Multiply parent local transformation matrix by current bone's transformation matrix if got a parent
             inherited_local_transformation_matrix = local_transformation_matrix
             
-            if bone_entry.parent_bone_name_checksum is not 0:
+            if bone_entry.parent_bone_name_checksum != 0:
                 if bone_entry.parent_bone_name_checksum in local_bone_transformation_matrices:
                     parent_local_transformation_matrix = local_bone_transformation_matrices[bone_entry.parent_bone_name_checksum]
                     inherited_local_transformation_matrix = parent_local_transformation_matrix @ local_transformation_matrix
